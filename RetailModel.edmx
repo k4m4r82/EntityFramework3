@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RetailModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="RetailModelStoreContainer">
+          <EntitySet Name="Barang" EntityType="RetailModel.Store.Barang" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Beli" EntityType="RetailModel.Store.Beli" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ItemBeli" EntityType="RetailModel.Store.ItemBeli" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Supplier" EntityType="RetailModel.Store.Supplier" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Beli_Supplier" Association="RetailModel.Store.FK_Beli_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="Beli" EntitySet="Beli" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemBeli_Barang" Association="RetailModel.Store.FK_ItemBeli_Barang">
+            <End Role="Barang" EntitySet="Barang" />
+            <End Role="ItemBeli" EntitySet="ItemBeli" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemBeli_Beli" Association="RetailModel.Store.FK_ItemBeli_Beli">
+            <End Role="Beli" EntitySet="Beli" />
+            <End Role="ItemBeli" EntitySet="ItemBeli" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Barang">
+          <Key>
+            <PropertyRef Name="BarangID" />
+          </Key>
+          <Property Name="BarangID" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="NamaBarang" Type="varchar" MaxLength="50" />
+          <Property Name="HargaBeli" Type="int" />
+          <Property Name="HargaJual" Type="int" />
+          <Property Name="Stok" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Beli">
+          <Key>
+            <PropertyRef Name="Nota" />
+          </Key>
+          <Property Name="Nota" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="SupplierID" Type="int" />
+          <Property Name="Tanggal" Type="datetime" />
+          <Property Name="Keterangan" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ItemBeli">
+          <Key>
+            <PropertyRef Name="ItemBeliID" />
+          </Key>
+          <Property Name="ItemBeliID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Nota" Type="varchar" MaxLength="10" />
+          <Property Name="BarangID" Type="varchar" MaxLength="20" />
+          <Property Name="Jumlah" Type="int" />
+          <Property Name="HargaBeli" Type="int" />
+          <Property Name="HargaJual" Type="int" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="SupplierID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="NamaSupplier" Type="varchar" MaxLength="50" />
+          <Property Name="Jalan" Type="varchar" MaxLength="100" />
+          <Property Name="Kota" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Beli_Supplier">
+          <End Role="Supplier" Type="RetailModel.Store.Supplier" Multiplicity="0..1" />
+          <End Role="Beli" Type="RetailModel.Store.Beli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierID" />
+            </Principal>
+            <Dependent Role="Beli">
+              <PropertyRef Name="SupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemBeli_Barang">
+          <End Role="Barang" Type="RetailModel.Store.Barang" Multiplicity="0..1" />
+          <End Role="ItemBeli" Type="RetailModel.Store.ItemBeli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Barang">
+              <PropertyRef Name="BarangID" />
+            </Principal>
+            <Dependent Role="ItemBeli">
+              <PropertyRef Name="BarangID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemBeli_Beli">
+          <End Role="Beli" Type="RetailModel.Store.Beli" Multiplicity="0..1" />
+          <End Role="ItemBeli" Type="RetailModel.Store.ItemBeli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Beli">
+              <PropertyRef Name="Nota" />
+            </Principal>
+            <Dependent Role="ItemBeli">
+              <PropertyRef Name="Nota" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RetailModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="RetailEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Barangs" EntityType="RetailModel.Barang" />
+          <EntitySet Name="Belis" EntityType="RetailModel.Beli" />
+          <EntitySet Name="ItemBelis" EntityType="RetailModel.ItemBeli" />
+          <EntitySet Name="Suppliers" EntityType="RetailModel.Supplier" />
+          <AssociationSet Name="FK_ItemBeli_Barang" Association="RetailModel.FK_ItemBeli_Barang">
+            <End Role="Barang" EntitySet="Barangs" />
+            <End Role="ItemBeli" EntitySet="ItemBelis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Beli_Supplier" Association="RetailModel.FK_Beli_Supplier">
+            <End Role="Supplier" EntitySet="Suppliers" />
+            <End Role="Beli" EntitySet="Belis" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ItemBeli_Beli" Association="RetailModel.FK_ItemBeli_Beli">
+            <End Role="Beli" EntitySet="Belis" />
+            <End Role="ItemBeli" EntitySet="ItemBelis" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Barang">
+          <Key>
+            <PropertyRef Name="BarangID" />
+          </Key>
+          <Property Name="BarangID" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="NamaBarang" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="HargaBeli" Type="Int32" />
+          <Property Name="HargaJual" Type="Int32" />
+          <Property Name="Stok" Type="String" MaxLength="10" Unicode="true" FixedLength="true" />
+          <NavigationProperty Name="ItemBelis" Relationship="RetailModel.FK_ItemBeli_Barang" FromRole="Barang" ToRole="ItemBeli" />
+        </EntityType>
+        <EntityType Name="Beli">
+          <Key>
+            <PropertyRef Name="Nota" />
+          </Key>
+          <Property Name="Nota" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="SupplierID" Type="Int32" />
+          <Property Name="Tanggal" Type="DateTime" />
+          <Property Name="Keterangan" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Supplier" Relationship="RetailModel.FK_Beli_Supplier" FromRole="Beli" ToRole="Supplier" />
+          <NavigationProperty Name="ItemBelis" Relationship="RetailModel.FK_ItemBeli_Beli" FromRole="Beli" ToRole="ItemBeli" />
+        </EntityType>
+        <EntityType Name="ItemBeli">
+          <Key>
+            <PropertyRef Name="ItemBeliID" />
+          </Key>
+          <Property Name="ItemBeliID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nota" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="BarangID" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="Jumlah" Type="Int32" />
+          <Property Name="HargaBeli" Type="Int32" />
+          <Property Name="HargaJual" Type="Int32" />
+          <NavigationProperty Name="Barang" Relationship="RetailModel.FK_ItemBeli_Barang" FromRole="ItemBeli" ToRole="Barang" />
+          <NavigationProperty Name="Beli" Relationship="RetailModel.FK_ItemBeli_Beli" FromRole="ItemBeli" ToRole="Beli" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="SupplierID" />
+          </Key>
+          <Property Name="SupplierID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NamaSupplier" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Jalan" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Kota" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Belis" Relationship="RetailModel.FK_Beli_Supplier" FromRole="Supplier" ToRole="Beli" />
+        </EntityType>
+        <Association Name="FK_ItemBeli_Barang">
+          <End Role="Barang" Type="RetailModel.Barang" Multiplicity="0..1" />
+          <End Role="ItemBeli" Type="RetailModel.ItemBeli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Barang">
+              <PropertyRef Name="BarangID" />
+            </Principal>
+            <Dependent Role="ItemBeli">
+              <PropertyRef Name="BarangID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Beli_Supplier">
+          <End Role="Supplier" Type="RetailModel.Supplier" Multiplicity="0..1" />
+          <End Role="Beli" Type="RetailModel.Beli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierID" />
+            </Principal>
+            <Dependent Role="Beli">
+              <PropertyRef Name="SupplierID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ItemBeli_Beli">
+          <End Role="Beli" Type="RetailModel.Beli" Multiplicity="0..1" />
+          <End Role="ItemBeli" Type="RetailModel.ItemBeli" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Beli">
+              <PropertyRef Name="Nota" />
+            </Principal>
+            <Dependent Role="ItemBeli">
+              <PropertyRef Name="Nota" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RetailModelStoreContainer" CdmEntityContainer="RetailEntities">
+          <EntitySetMapping Name="Barangs">
+            <EntityTypeMapping TypeName="RetailModel.Barang">
+              <MappingFragment StoreEntitySet="Barang">
+                <ScalarProperty Name="BarangID" ColumnName="BarangID" />
+                <ScalarProperty Name="NamaBarang" ColumnName="NamaBarang" />
+                <ScalarProperty Name="HargaBeli" ColumnName="HargaBeli" />
+                <ScalarProperty Name="HargaJual" ColumnName="HargaJual" />
+                <ScalarProperty Name="Stok" ColumnName="Stok" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Belis">
+            <EntityTypeMapping TypeName="RetailModel.Beli">
+              <MappingFragment StoreEntitySet="Beli">
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="Tanggal" ColumnName="Tanggal" />
+                <ScalarProperty Name="Keterangan" ColumnName="Keterangan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemBelis">
+            <EntityTypeMapping TypeName="RetailModel.ItemBeli">
+              <MappingFragment StoreEntitySet="ItemBeli">
+                <ScalarProperty Name="ItemBeliID" ColumnName="ItemBeliID" />
+                <ScalarProperty Name="Nota" ColumnName="Nota" />
+                <ScalarProperty Name="BarangID" ColumnName="BarangID" />
+                <ScalarProperty Name="Jumlah" ColumnName="Jumlah" />
+                <ScalarProperty Name="HargaBeli" ColumnName="HargaBeli" />
+                <ScalarProperty Name="HargaJual" ColumnName="HargaJual" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="RetailModel.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="SupplierID" ColumnName="SupplierID" />
+                <ScalarProperty Name="NamaSupplier" ColumnName="NamaSupplier" />
+                <ScalarProperty Name="Jalan" ColumnName="Jalan" />
+                <ScalarProperty Name="Kota" ColumnName="Kota" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="RetailModel">
+        <EntityTypeShape EntityType="RetailModel.Barang" Width="1.5" PointX="3.625" PointY="2.75" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="RetailModel.Beli" Width="1.5" PointX="3.625" PointY="0.5" Height="1.9210009765624996" IsExpanded="true" />
+        <EntityTypeShape EntityType="RetailModel.ItemBeli" Width="1.5" PointX="6" PointY="1.375" Height="2.2496956380208335" IsExpanded="true" />
+        <EntityTypeShape EntityType="RetailModel.Supplier" Width="1.5" PointX="1.5" PointY="1.375" Height="1.7566536458333335" IsExpanded="true" />
+        <AssociationConnector Association="RetailModel.FK_ItemBeli_Barang" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.125" PointY="3.1873478190104167" />
+          <ConnectorPoint PointX="6" PointY="3.1873478190104167" />
+        </AssociationConnector>
+        <AssociationConnector Association="RetailModel.FK_Beli_Supplier" ManuallyRouted="false">
+          <ConnectorPoint PointX="3" PointY="1.8980004882812498" />
+          <ConnectorPoint PointX="3.625" PointY="1.8980004882812498" />
+        </AssociationConnector>
+        <AssociationConnector Association="RetailModel.FK_ItemBeli_Beli" ManuallyRouted="false">
+          <ConnectorPoint PointX="5.125" PointY="1.8980004882812498" />
+          <ConnectorPoint PointX="6" PointY="1.8980004882812498" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
